@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Токсичен ли этот комментарий?</h2>
+  <form id="checkForm">
+    <div class="form-group">
+      <div class="col-md-10">
+        <input class="form-control" id="query" name="query" autofocus>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-block btn-primary">Проверить</button>
+      </div>
+    </div>
+  </form>
+</div>
+<div id="resultContainer" class="container" hidden>
+  <h2>Ответ модели</h2>
+  <div id="result"></div>
+  <h2>Результат</h2>
+  <div id="explanation"></div>
+</div>
+
+<script>
+$("#checkForm").submit(function(event) {
+  event.preventDefault();
+
+  var $form = $(this),
+    term = $form.find("input[name='query']").val();
+
+  var request = $.get("/toxic", {text: term});
+
+  request.done(function(response) {
+    $("#result").empty().append(response);
+    var explanation = "Токсичен";
+    var normalProbability = response["normal"]
+    if (normalProbability > 0.8) {
+      explanation = "Все в порядке";
+    } else if (normalProbability > 0.2) {
+      explanation = "Возможно, токсичен (но это не точно)";
+    }
+
+    $("#result").empty().append(JSON.stringify(response));
+    $("#explanation").empty().append(explanation);
+    $("#resultContainer").show();
+  });
+  request.fail(function(response) {
+    $("#result").empty().append("Ошибка");
+    $("#explanation").empty();
+    $("#resultContainer").show();
+  });
+});
+</script>
+ 
+</body>
+</html>
+
