@@ -24,11 +24,9 @@ if __name__ == '__main__':
     label_columns = ['normal', 'insult', 'obscenity', 'threat']
 
     train_df = pd.concat([pd.read_csv(filename) for filename in args.train], axis=0)
-    train_df = train_df.reset_index()
     if args.validation is not None:
         val_df = pd.concat([pd.read_csv(filename) for filename in args.validation], axis=0)
-        val_df = val_df.reset_index()
-        eval_set = (val_df['text'], val_df[label_columns].values)
+        eval_set = (val_df['text'].values, val_df[label_columns].values)
     else:
         eval_set = None
 
@@ -46,7 +44,7 @@ if __name__ == '__main__':
         )
 
     trainer.fit(
-        train_df['text'],
+        train_df['text'].values,
         train_df[label_columns].values,
         eval_set=eval_set
     )
