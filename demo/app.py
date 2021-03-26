@@ -1,6 +1,6 @@
 import os
 from flask import Flask, request, jsonify, send_from_directory, abort
-from toxiclib.inference.classifier import Classifier
+from toxic_text_classifier.inference.classifier import Classifier
 
 
 def create_app(model_path):
