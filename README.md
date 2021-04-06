@@ -53,7 +53,7 @@ We provide the resulting models for russian toxic comments detection at the rele
 
 To use the models, you'll need to install the library
 ```
-python -m pip install --user git+https://github.com/thousandvoices/ok_ml_cup[bert]
+python -m pip install --user git+https://github.com/thousandvoices/ok_ml_cup.git#egg=ok_ml_cup[bert]
 ```
 
 Invoking them from python is simple now. They will be downloaded automatically and cached at ```~/.toxic_text_classifier```.
