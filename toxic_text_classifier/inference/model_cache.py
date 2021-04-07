@@ -1,4 +1,6 @@
-import urllib
+import urllib.request
+import os
+import shutil
 import hashlib
 from zipfile import ZipFile
 from tempfile import NamedTemporaryFile
@@ -44,7 +46,16 @@ class ModelCache:
                 return cache_path
             else:
                 with downloader(model_name) as archive_path, ZipFile(archive_path) as archive:
-                    archive.extractall(cache_path)
+                    temp_path = self.path / (cache_key + '.download')
+                    temp_path.mkdir(parents=True, exist_ok=True)
+                    for name in archive.namelist():
+                        filename = os.path.basename(name)
+                        if len(filename) > 0:
+                            target = temp_path / filename
+                            with archive.open(name) as source, open(target, 'wb') as destination:
+                                shutil.copyfileobj(source, destination)
+
+                    temp_path.rename(cache_path)
 
                 return cache_path
         else:

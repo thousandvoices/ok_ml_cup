@@ -58,9 +58,9 @@ python -m pip install --user git+https://github.com/thousandvoices/ok_ml_cup.git
 
 Invoking them from python is simple now. They will be downloaded automatically and cached at ```~/.toxic_text_classifier```.
 ```python
-from toxic_text_classifier.inference import Classifier
+from toxic_text_classifier.inference.classifier import Classifier
 
-classifier = Classifer.load('https://github.com/thousandvoices/ok_ml_cup/releases/download/v0.0.1/rubert_conversational_4_layers.zip')
+classifier = Classifier.load('https://github.com/thousandvoices/ok_ml_cup/releases/download/v0.0.1/rubert_conversational_4_layers.zip')
 print(classifier.predict(['ну и тупой же ты', 'я тебя люблю']))
 ```
 
